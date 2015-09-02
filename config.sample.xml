@@ -1,0 +1,98 @@
+<?xml version="1.0"?>
+<!-- This file contains configuration settings for the SIS Snapshot Controller -->
+
+<settings>
+	<logging>
+		<!-- This is the absolute path to the directory where the controllers logs should be stored -->
+		<logPath>D:\SIS_Snapshot\Logs</logPath>
+		<!-- This is the number of days that logs should be maintained in the directory above -->
+		<!-- Note: If archiving is enabled, logs are also stored in archives -->
+		<logRetentionPeriod>14</logRetentionPeriod>
+	</logging>
+	<archiving>
+		<!-- Keep archives of feed files & logs? Set to true or false. -->
+		<enableArchiving>true</enableArchiving>
+		<!-- The absolute path to the archives directory -->
+		<archivePath>D:\SIS_Snapshot\Archives</archivePath>
+		<!-- The period (in days) to retain archives -->
+		<archiveRetentionPeriod>90</archiveRetentionPeriod>
+	</archiving>
+	<server>
+		<!-- The FQDN/IP Address to submit feed files to -->
+		<serverAddress>blackboard.institution.edu</serverAddress>
+
+		<!-- Use HTTPS? Set to false to use HTTP (not recommended). -->
+		<useHTTPS>true</useHTTPS>
+
+		<!-- Non-Standard Port Number for server connection. Leave Blank if using standard ports (HTTPS: 443; HTTP: 80) -->
+		<nonStandardPort></nonStandardPort>
+
+		<!-- Ignore certificate errors e.g. if using self-signed certificates on an app server? Set to true or false -->
+		<ignoreCertificateErrors>false</ignoreCertificateErrors>
+
+		<!-- Type of Integration in use. Currently acceptable values are SnapshotFlatFile and SnapshotXML. -->
+		<integrationType>SnapshotFlatFile</integrationType>
+
+		<!-- Integration Username -->
+		<integrationUsername>1eda46a6-3ee0-41cf-8ed0-dab58d28713a</integrationUsername>
+
+		<!-- Integration Password -->
+		<integrationPassword>thisIsAnExtremelyBadPassword</integrationPassword>
+
+		<!-- The number of seconds to delay between status check polls -->
+		<pollDelay>5</pollDelay>
+
+		<!-- The number of consecutive identical complete records checks before aborting status check -->
+		<statusCheckAbortThreashold>5</statusCheckAbortThreashold>
+	</server>
+	<email>
+		
+		<!-- Send email reports? Set to true or false -->
+		<sendEmail>true</sendEmail>
+
+		<!-- SMTP server to send mail through -->
+		<smtpServer>mail.institution.edu</smtpServer>
+
+		<!-- Email address to send reports from -->
+		<fromAddress>sis_snapshot@institution.edu</fromAddress>
+
+		<!-- List of recipients to send email reports to. -->
+		<recipients>
+			<recipient>lms_admin@institution.edu</recipient>
+			<recipient>registrar@institution.edu</recipient>
+			<recipient>dba@institution.edu</recipient>
+		</recipients>
+
+		<!-- An optional prefix to put in the subject line -->
+		<subjectPrefix>[Snapshot]</subjectPrefix>
+	</email>
+	<feedFiles>
+
+		<!-- Each feed file to submit gets its own section here -->
+		<feedFile>
+
+			<!-- Full path to the File. The last path element will be used in reporting -->
+			<feedFilePath>D:\SIS_Snapshot\Feed_Files\Users.txt</feedFilePath>
+
+			<!-- Type of operation to perform with the file. Valid options depend on integration type specified -->
+			<!-- For SnapshotFlatFile valid options are: Store, CompleteRefresh, CompleteRefreshByDataSource, and Delete -->
+			<!-- For SnapshotCMLFile valid options are: RecordStatus, CompleteRefresh, CompleteRefreshByDataSource, and DeleteOnly -->
+			<operationType>Store</operationType>
+
+			<!-- Type of record contained in the file. Only necessary for SnapshotFeedFile integraionts. Ignored in SnapshotXMLFile integrations -->
+			<!-- Valid options are: Course, CourseAssociation, CourseCategory, CourseCategoryMembership, CourseMembership, CourseStandardAssociation, HeirarchyNode, ObserverAssosciation, Organization, OrganizationAssociation, OrganizationCategory, OrganizationCategoryMembership, OrganizationMembership, Person, Term, UserAssociation, UserSecondaryInstitutionRole -->
+			<recordType>Person</recordType>
+
+		</feedFile>
+		<feedFile>
+			<feedFilePath>D:\SIS_Snapshot\Feed_Files\Courses.txt</feedFilePath>
+			<operationType>Store</operationType>
+			<recordType>Course</recordType>
+		</feedFile>
+		<feedFile>
+			<feedFilePath>D:\SIS_Snapshot\Feed_Files\Enrollments.txt</feedFilePath>
+			<operationType>Store</operationType>
+			<recordType>CourseMembership</recordType>
+		</feedFile>
+	</feedFiles>
+</settings>
