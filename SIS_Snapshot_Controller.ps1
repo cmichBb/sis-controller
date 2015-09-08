@@ -155,12 +155,12 @@ $global:config.settings.feedFiles.feedFile | ForEach-Object {
             recordType = $_.recordType
             operationType = $_.operationType
             statusID = $null
-            recordCount = $null
+            recordCount = 0
             startTime = $null
             endTime = $null
-            completeCount = $null
-            errorCount = $null
-            warningCount = $null
+            completeCount = 0
+            errorCount = 0
+            warningCount = 0
             consecutiveStatus = 0
             configError = $null
             statusAborted = $FALSE
@@ -328,7 +328,8 @@ foreach ($feedFile in $global:feedFiles)
         else
         {
             Write-Log "File $($feedFile.fileName) exists, but was empty and was not processed."
-            Write-Log ""   
+            Write-Log ""
+            $feedFile.processed = $TRUE
         }
     }
     else
@@ -423,7 +424,7 @@ if ($global:config.settings.email.sendEmail -eq "true") {
         $hostname = hostname
         $duration = ($global:endTime - $global:startTime).TotalSeconds -as [Int]
         $body += "<p>This execution of the Powershell SIS Snapshot controller finished in $(Format-WordNumber -count $duration -singular "second"). Here's a summary of the feed files that were uploaded to $($global:config.settings.server.serverAddress):</p>`r`n"
-        $body += "<table border=`"1`" cellspacing=`"0`" cellpadding=`"3`" width=`"100%`" style=`"max-width:450px`">`r`n"
+        $body += "<table border=`"1`" cellspacing=`"0`" cellpadding=`"3`" width=`"100%`" style=`"max-width:700px`">`r`n"
         $body += "<tr><th>File</th><th>Duration</th><th>Summary</th></tr>`r`n"
 
         $errors = 0
@@ -455,8 +456,8 @@ if ($global:config.settings.email.sendEmail -eq "true") {
                 # Not processed
                 if ($feedFile.configError -ne $null) {
                     $body += "<tr valign=`"top`"><td>$($feedFile.filename)</td><td>n/a</td><td>$($feedFile.configError)</td></tr>`r`n"
+                    $errors += 1
                 }
-                $errors += 1
             }
         }
 
